@@ -1,1 +1,81 @@
-<p>landing-about works!</p>
+<!-- TOP-LEFT ICON -->
+<div
+  class="fixed top-6 left-6 z-50 cursor-pointer
+         w-12 h-12 bg-gradient-to-br from-load-red via-load-orange to-load-yellow
+         rounded-2xl flex items-center justify-center transform rotate-6
+         shadow-xl shadow-load-red/40"
+    (click)="navigateToPage('/')"
+>
+  <img src="/assets/icons/bolt.svg" alt="Logo" class="w-6 h-6 transform -rotate-6" />
+</div>
+
+
+<section
+  class="w-full min-h-screen bg-gradient-to-b from-[#0b0d12] to-[#111318] text-gray-300 px-6 py-20 flex flex-col items-center"
+>
+
+  <!-- HEADER -->
+  <h2 class="text-4xl md:text-5xl font-bold text-white tracking-wide mb-12">
+    About <span class="text-load-orange">Me</span>
+  </h2>
+
+  <!-- IMAGE + NAME + DESCRIPTION -->
+  <div class="max-w-5xl w-full flex flex-col md:flex-row items-center md:items-start gap-12">
+
+    <!-- PROFILE IMAGE -->
+    <div class="relative">
+      <div
+        class="w-48 h-48 rounded-full p-[4px] bg-gradient-to-br from-load-red via-load-orange to-load-yellow"
+      >
+        <div class="w-full h-full rounded-full overflow-hidden bg-[#0b0d12] flex items-center justify-center">
+          <img src="/assets/images/pic_1.png" alt="Kussagra Pathak" class="w-full h-full object-cover" />
+        </div>
+      </div>
+    </div>
+
+    <!-- TEXT BLOCK -->
+    <div class="flex flex-col gap-6 max-w-2xl">
+      <h3 class="text-3xl md:text-4xl font-semibold text-white">
+        Hi, I'm <span class="text-load-orange">Kussagra Pathak</span>
+      </h3>
+
+      <p class="text-lg leading-relaxed text-gray-300">
+        I’m a passionate software developer focused on creating high-performance, scalable, 
+        and beautifully engineered digital experiences. My work blends precise engineering,
+        modern UI design, and problem-first architecture to deliver tools that make real impact.
+      </p>
+
+      <!-- PROJECT DESCRIPTION -->
+      <div class="mt-6">
+        <h4 class="text-2xl font-semibold text-white mb-3">About This Project</h4>
+        <p class="text-lg leading-relaxed text-gray-300">
+          LoadMaster is a next-generation load monitoring and optimization platform built to help 
+          developers and teams understand system performance intuitively. With real-time analytics, 
+          smart pattern recognition, and precise breakdowns of server behavior, LoadMaster empowers 
+          you to optimize infrastructure, reduce bottlenecks, and scale with confidence.
+          <br /><br />
+          This project reflects my approach to engineering—clean design, efficient architecture, 
+          and tools that feel as good to use as they are powerful under the hood.
+        </p>
+      </div>
+
+      <!-- CONTACT INFO -->
+      <div class="mt-8 flex flex-col gap-2">
+        <p class="text-lg">
+          🌐 Website: 
+          <a href="https://kussagrapathak.in/?src=loadMaster" class="text-load-orange hover:underline">
+            kussagrapathak.in
+          </a>
+        </p>
+
+        <p class="text-lg">
+          📩 Email: 
+          <a href="mailto:info@kussagrapathak.in" class="text-load-orange hover:underline">
+            info&#64;kussagrapathak.in
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+</section>

@@ -1,0 +1,45 @@
+/* Base wrapper for both card types */
+.feature-card-left,
+.feature-card-right {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem; /* matches Tailwind rounded-xl */
+}
+
+/* Pseudo-element gradient border */
+.feature-card-left::before,
+.feature-card-right::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px; /* border thickness */
+  border-radius: inherit;
+  background: transparent;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* LEFT → Red gradient on hover */
+.feature-card-left:hover::before {
+  background: linear-gradient(45deg, #ff3d3d, #ff7a7a);
+  opacity: 1;
+}
+
+/* RIGHT → Yellow gradient on hover */
+.feature-card-right:hover::before {
+  background: linear-gradient(45deg, #ffd633, #ffb800);
+  opacity: 1;
+}
+
+/* Lift effect on hover */
+.feature-card-left:hover,
+.feature-card-right:hover {
+  transform: translateY(-4px);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}

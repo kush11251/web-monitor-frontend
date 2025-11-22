@@ -1,1 +1,81 @@
-<p>landing-home works!</p>
+<header
+  class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 
+         bg-gradient-to-b from-[#0b0d12] to-[#111318] border-b border-white/5"
+>
+  <!-- LEFT: Logo + Name -->
+  <div class="flex items-center gap-3">
+    <div
+      class="w-12 h-12 bg-gradient-to-br from-load-red via-load-orange to-load-yellow
+             rounded-2xl flex items-center justify-center transform rotate-6
+             shadow-xl shadow-load-red/40"
+    >
+      <img src="/assets/icons/bolt.svg" alt="Logo" class="w-6 h-6 transform -rotate-6" />
+    </div>
+
+    <h1 class="text-xl md:text-2xl font-semibold text-white tracking-wide">
+      LoadMaster
+    </h1>
+  </div>
+
+  <!-- CENTER NAVIGATION (Desktop only) -->
+  <nav class="hidden md:flex items-center gap-10 text-gray-300 text-lg mx-auto">
+    <a class="hover:text-white cursor-pointer">Features</a>
+    <a class="hover:text-white cursor-pointer">Pricing</a>
+    <a class="hover:text-white cursor-pointer">Resources</a>
+    <a class="hover:text-white cursor-pointer" (click)="navigateToPage('/about')">About</a>
+  </nav>
+
+  <!-- RIGHT: Sign In + Get Started -->
+  <div class="hidden md:flex items-center gap-6">
+    <a class="hover:text-white text-gray-300 cursor-pointer" (click)="navigateToPage('/auth/login')">Sign In</a>
+
+    <button
+      class="bg-gradient-to-r from-load-red via-load-orange to-load-yellow
+             text-black font-semibold px-5 py-2 rounded-xl shadow-lg"
+             (click)="navigateToPage('/auth/signup')"
+    >
+      Get Started
+    </button>
+  </div>
+
+  <!-- MOBILE HAMBURGER -->
+  <button
+    class="md:hidden text-gray-300 text-3xl active:scale-90 transition-transform"
+    (click)="toggleMenu()"
+  >
+    <i class="fa-solid" [ngClass]="menuOpen ? 'fa-xmark' : 'fa-bars'"></i>
+  </button>
+</header>
+
+<nav
+  *ngIf="menuOpen"
+  class="md:hidden absolute z-40 w-full left-0 right-0 bg-[#0f1115]/95 
+         backdrop-blur-xl border-b border-white/5 py-4 animate-fade-in pt-24"
+>
+  <ul class="flex flex-col gap-4 px-6 text-gray-300 text-lg">
+    <li class="hover:text-white cursor-pointer">Features</li>
+    <li class="hover:text-white cursor-pointer">Pricing</li>
+    <li class="hover:text-white cursor-pointer">Resources</li>
+    <li class="hover:text-white cursor-pointer" (click)="navigateToPage('/about')">About</li>
+    <hr class="border-white/10" />
+    <li class="hover:text-white cursor-pointer" (click)="navigateToPage('/auth/login')">Sign In</li>
+
+    <li>
+      <button
+        class="w-full bg-gradient-to-r from-load-red via-load-orange to-load-yellow
+               text-black font-semibold py-2 rounded-xl shadow-lg"
+               (click)="navigateToPage('/auth/signup')"
+      >
+        Get Started
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<app-hero-section></app-hero-section>
+
+<app-features-section></app-features-section>
+
+<app-contact-section></app-contact-section>
+
+<app-about-section></app-about-section>
