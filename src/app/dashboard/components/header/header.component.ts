@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-
+  serImage = '/assets/images/pic_1.png';
 }

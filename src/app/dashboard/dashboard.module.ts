@@ -10,6 +10,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { DashboardHomeComponent } from './pages/dashboard-home/dashboard-home.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { WebsiteMonitoringComponent } from './pages/website-monitoring/website-monitoring.component';
+import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
 
 
 @NgModule({
@@ -20,7 +21,9 @@ import { WebsiteMonitoringComponent } from './pages/website-monitoring/website-m
 
     DashboardHomeComponent,
     SettingsComponent,
-    WebsiteMonitoringComponent
+    WebsiteMonitoringComponent,
+
+    SafeUrlPipe
   ],
   imports: [
     DashboardRoutingModule,

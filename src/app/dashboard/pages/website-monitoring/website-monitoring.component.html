@@ -1,1 +1,101 @@
-<p>website-monitoring works!</p>
+<div class="bg-[#0a0c1a] min-h-screen text-white px-4 md:px-8 py-8">
+
+  <!-- Title -->
+  <h2 class="text-2xl font-semibold mb-1">Monitor Overview</h2>
+  <p class="text-slate-400 text-sm mb-6">
+    Real-time performance tracking across all your endpoints
+  </p>
+
+  <!-- Cards Container -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+    <div
+      *ngFor="let card of cards"
+      class="bg-slate-900/60 border border-slate-700/40 rounded-xl p-6 shadow-lg 
+             transition-all duration-300 cursor-pointer
+             hover:shadow-blue-500/40 hover:-translate-y-1 hover:bg-slate-900/80">
+
+      <!-- Header Row -->
+      <div class="flex justify-between items-start mb-4">
+        <!-- ICON -->
+        <i [ngClass]="card.icon + ' ' + card.iconColor + ' text-2xl'"></i>
+
+        <!-- Change Value -->
+        <span [ngClass]="card.changeColor" class="text-sm font-semibold">
+          {{ card.change }}
+        </span>
+      </div>
+
+      <!-- Value -->
+      <p class="text-4xl font-bold">{{ card.value }}</p>
+
+      <!-- Label -->
+      <p class="text-slate-400 mt-1 text-sm">{{ card.label }}</p>
+    </div>
+  </div>
+
+  <!-- Additional Card Widgets Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <app-card-widget *ngFor="let widget of cardWidgets" [data]="widget"></app-card-widget>
+  </div>
+
+  <!-- Glowing Add Button -->
+  <button
+    class="fixed bottom-6 right-6 w-14 h-14 bg-purple-600 text-white rounded-full 
+           flex items-center justify-center text-2xl shadow-lg shadow-purple-500/50
+           transition-transform transform hover:scale-110 hover:shadow-purple-400/70"
+    (click)="addNewWidget()"
+  >
+    <i class="fa-solid fa-plus"></i>
+  </button>
+
+</div>
+
+<div
+  *ngIf="showPopup"
+  class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+>
+  <div class="bg-slate-900 rounded-xl w-11/12 sm:w-96 p-6 shadow-2xl border border-slate-700">
+    
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-semibold text-white">Add New Service</h3>
+      <button class="text-slate-400 hover:text-white text-xl" (click)="closePopup()">&times;</button>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="submitForm()" class="flex flex-col gap-4">
+
+      <div>
+        <label class="text-slate-400 text-sm mb-1 block">Service URL</label>
+        <input
+          type="text"
+          [(ngModel)]="newService.url"
+          name="url"
+          required
+          placeholder="https://api.example.com"
+          class="w-full p-2 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+      </div>
+
+      <div>
+        <label class="text-slate-400 text-sm mb-1 block">Sub Tag</label>
+        <input
+          type="text"
+          [(ngModel)]="newService.subTag"
+          name="subTag"
+          required
+          placeholder="Production API"
+          class="w-full p-2 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-lg shadow-lg transition-colors"
+      >
+        Add Service
+      </button>
+    </form>
+
+  </div>
+</div>
