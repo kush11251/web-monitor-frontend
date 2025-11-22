@@ -1,0 +1,90 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f1115] to-[#1a1d24] px-4">
+  <div
+    class="w-full max-w-md bg-[#14161C]/70 backdrop-blur-xl rounded-2xl p-8 shadow-2xl border border-white/5 animate-fade-in"
+  >
+    <!-- Logo -->
+    <div class="flex flex-col items-center mb-6">
+      <div
+        class="w-16 h-16 bg-gradient-to-br from-load-red via-load-orange to-load-yellow 
+               rounded-2xl flex items-center justify-center transform rotate-6 
+               shadow-2xl shadow-load-red/40"
+      >
+        <img src="/assets/icons/bolt.svg" alt="Bolt Icon" class="w-8 h-8 transform -rotate-6" />
+      </div>
+
+      <h1 class="text-3xl font-semibold text-white">LoadMaster</h1>
+      <p class="text-gray-400 text-sm mt-1">Performance Monitoring Reinvented</p>
+    </div>
+
+    <!-- Title -->
+    <h2 class="text-xl font-semibold text-white mb-1">Welcome Back</h2>
+    <p class="text-gray-500 text-sm mb-6">Sign in to access your dashboard</p>
+
+    <!-- Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- Email -->
+      <label class="block text-gray-300 text-sm mb-2">Email Address</label>
+      <div class="relative mb-5">
+        <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+          <i class="fa-regular fa-envelope text-sm"></i>
+        </span>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="you@company.com"
+          class="w-full bg-[#1c1e24] border border-gray-700 rounded-xl px-10 py-3 text-gray-200 
+                 focus:ring-2 focus:ring-orange-400 focus:outline-none transition-all"
+        />
+        <p *ngIf="email.invalid && email.touched" class="text-red-400 text-xs mt-1">
+          Enter a valid email address
+        </p>
+      </div>
+
+      <!-- Password -->
+      <label class="block text-gray-300 text-sm mb-2">Password</label>
+      <div class="relative mb-3">
+        <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+          <i class="fa-solid fa-lock text-sm"></i>
+        </span>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="•••••••••••"
+          class="w-full bg-[#1c1e24] border border-gray-700 rounded-xl px-10 py-3 text-gray-200 
+                 focus:ring-2 focus:ring-orange-400 focus:outline-none transition-all"
+        />
+        <p *ngIf="password.invalid && password.touched" class="text-red-400 text-xs mt-1">
+          Password is required
+        </p>
+      </div>
+
+      <div class="flex justify-between items-center mb-6">
+        <label class="flex items-center gap-2 text-sm text-gray-400 cursor-pointer">
+          <input type="checkbox" class="accent-orange-500" formControlName="rememberMe"/>
+          Remember me
+        </label>
+
+        <a class="text-orange-400 text-sm hover:underline cursor-pointer">
+          Forgot password?
+        </a>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid"
+        class="w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-black font-semibold py-3 
+               rounded-xl shadow-lg hover:brightness-110 disabled:opacity-50 
+               transition-all flex items-center justify-center gap-2"
+      >
+        Sign In
+        <i class="fa-solid fa-arrow-right text-sm"></i>
+      </button>
+    </form>
+
+    <p class="text-gray-500 text-sm text-center mt-6">
+      Don’t have an account?
+      <a class="text-orange-400 hover:underline cursor-pointer" (click)="redirectToSignUp()">Create one</a>
+    </p>
+  </div>
+</div>
