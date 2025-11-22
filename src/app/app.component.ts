@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
+import { inject } from '@vercel/analytics';
+
 import { environment } from '../environments/environment';
 
 @Component({
@@ -15,5 +17,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     console.log("Environment Name: ", environment.production ? 'Production' : 'Development');
+
+    inject();
   }
 }
