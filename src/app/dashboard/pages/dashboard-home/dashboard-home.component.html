@@ -1,91 +1,224 @@
 <app-header></app-header>
 
 <div class="p-6 text-white min-h-screen bg-[#0d1324]">
-
   <!-- Page Title -->
-  <h2 class="text-2xl font-semibold mb-4">Load Testing Dashboard</h2>
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-semibold">Analytics Dashboard</h2>
+    <button 
+      (click)="refreshAnalytics()" 
+      [disabled]="isLoading"
+      class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition disabled:opacity-50 flex items-center gap-2">
+      <i class="fa-solid fa-refresh" [class.fa-spin]="isLoading"></i>
+      Refresh
+    </button>
+  </div>
 
-  <!-- Controls Section -->
-  <div class="bg-slate-900/60 border border-slate-700/40 rounded-xl p-6 mb-6 shadow-xl">
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="mb-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+    <p class="text-red-400">{{ errorMessage }}</p>
+  </div>
 
-    <h3 class="text-xl font-semibold mb-4">Add Website</h3>
-
-    <div class="flex flex-col md:flex-row gap-4 items-center">
-      <input type="text" [(ngModel)]="websiteUrl" placeholder="Enter website URL (https://...)"
-        class="w-full md:flex-1 px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white focus:ring-2 focus:ring-blue-500 outline-none" />
-
-      <button (click)="addWebsite()"
-        class="px-6 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 hover:opacity-90 font-semibold transition">
-        Add Website
-      </button>
+  <!-- Loading State -->
+  <div *ngIf="isLoading && !analyticsData" class="flex items-center justify-center min-h-[400px]">
+    <div class="text-center">
+      <i class="fa-solid fa-spinner fa-spin text-4xl text-blue-400 mb-4"></i>
+      <p class="text-gray-400">Loading analytics...</p>
     </div>
   </div>
 
-  <!-- Websites Display Section -->
-  <h3 class="text-xl font-semibold mb-4">Active Load Test Sessions</h3>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-
-    <!-- Website Card -->
-    <!-- Website Card -->
-    <div *ngFor="let site of websites; let i = index" class="bg-slate-900/40 border border-slate-700/30 rounded-xl shadow-lg overflow-hidden
-         hover:border-blue-500/40 transition">
-
-      <!-- Card Header -->
-      <div class="flex justify-between items-center p-4 bg-slate-900/60 border-b border-slate-700/30">
-        <span class="font-semibold text-sm truncate w-3/4">{{ site.url }}</span>
-
-        <div class="flex gap-2">
-          <!-- Enlarge Preview Button -->
-          <button (click)="openPreview(site.url)" class="text-blue-400 hover:text-blue-300 text-sm" title="Enlarge Preview">
-            <i class="fa-solid fa-expand"></i>
-          </button>
-
-          <!-- Remove Website -->
-          <button (click)="removeWebsite(i)" class="text-red-400 hover:text-red-300 text-sm">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
+  <!-- Analytics Content -->
+  <div *ngIf="!isLoading && analyticsData">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+      <!-- Total Monitors -->
+      <div class="bg-slate-900/60 border border-slate-700/40 rounded-xl p-6 shadow-xl">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-sm font-medium text-gray-400">Total Monitors</h3>
+          <i class="fa-solid fa-server text-blue-400"></i>
         </div>
+        <p class="text-3xl font-bold text-white">{{ analyticsData.totalMonitors }}</p>
       </div>
 
-      <!-- iFrame -->
-      <div class="relative">
-        <iframe *ngIf="site.canEmbed"
-          [src]="site.url + '?t=' + site.timestamp | safeUrl"
-          class="w-full h-72 md:h-64 bg-black"
-          frameborder="0"
-          (error)="iframeLoadError(site)">
-        </iframe>
-
-
-        <div *ngIf="!site.canEmbed"
-          class="w-full h-72 md:h-64 bg-slate-800 flex flex-col items-center justify-center text-center p-4 rounded-b-lg">
-          <p class="text-red-400 font-semibold mb-2">Cannot embed this site</p>
-          <button (click)="openInNewTab(site.url)"
-            class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold">
-            Open in New Tab
-          </button>
+      <!-- Active Monitors -->
+      <div class="bg-slate-900/60 border border-slate-700/40 rounded-xl p-6 shadow-xl">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-sm font-medium text-gray-400">Active</h3>
+          <i class="fa-solid fa-check-circle text-green-400"></i>
         </div>
+        <p class="text-3xl font-bold text-white">{{ analyticsData.activeMonitors }}</p>
+      </div>
+
+      <!-- Paused Monitors -->
+      <div class="bg-slate-900/60 border border-slate-700/40 rounded-xl p-6 shadow-xl">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-sm font-medium text-gray-400">Paused</h3>
+          <i class="fa-solid fa-pause-circle text-yellow-400"></i>
+        </div>
+        <p class="text-3xl font-bold text-white">{{ analyticsData.pausedMonitors }}</p>
+      </div>
+
+      <!-- Average Uptime -->
+      <div class="bg-slate-900/60 border border-slate-700/40 rounded-xl p-6 shadow-xl">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-sm font-medium text-gray-400">Avg Uptime</h3>
+          <i class="fa-solid fa-chart-line text-purple-400"></i>
+        </div>
+        <p class="text-3xl font-bold text-white">{{ analyticsData.averageUptime }}%</p>
+      </div>
+
+      <!-- Average Response Time -->
+      <div class="bg-slate-900/60 border border-slate-700/40 rounded-xl p-6 shadow-xl">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-sm font-medium text-gray-400">Avg Response</h3>
+          <i class="fa-solid fa-clock text-orange-400"></i>
+        </div>
+        <p class="text-3xl font-bold text-white">{{ analyticsData.averageResponseTime }}ms</p>
       </div>
     </div>
 
-    <!-- Fullscreen Preview Modal -->
-    <div *ngIf="previewSite"
-      class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <!-- Response Time Chart -->
+    <div class="bg-slate-900/60 border border-slate-700/40 rounded-xl p-6 mb-6 shadow-xl">
+      <h3 class="text-xl font-semibold mb-4">Real-Time Response Time</h3>
+      <div class="h-[400px]">
+        <canvas #responseTimeChart></canvas>
+      </div>
+    </div>
 
-      <div class="bg-slate-900 rounded-xl w-full max-w-5xl h-[80vh] p-4 relative shadow-2xl">
+    <!-- Monitors List -->
+    <div class="bg-slate-900/60 border border-slate-700/40 rounded-xl p-6 shadow-xl">
+      <h3 class="text-xl font-semibold mb-4">Monitors</h3>
+      
+      <div *ngIf="analyticsData.monitors.length === 0" class="text-center py-8 text-gray-400">
+        <i class="fa-solid fa-inbox text-4xl mb-4"></i>
+        <p>No monitors configured yet</p>
+      </div>
 
-        <!-- Close Button -->
-        <button (click)="closePreview()" class="absolute top-4 right-4 text-white text-2xl hover:text-red-400">
-          <i class="fa-solid fa-xmark"></i>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" *ngIf="analyticsData.monitors.length > 0">
+        <div 
+          *ngFor="let monitor of analyticsData.monitors" 
+          (click)="openMonitorPopup(monitor)"
+          class="bg-slate-800/40 border border-slate-700/30 rounded-lg p-4 hover:border-blue-500/40 transition cursor-pointer hover:shadow-lg hover:shadow-blue-500/20">
+          
+          <!-- Monitor Header -->
+          <div class="flex justify-between items-start mb-3">
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-1 truncate">{{ monitor.name }}</h4>
+              <p class="text-xs text-gray-400 truncate">{{ monitor.url }}</p>
+            </div>
+            <span [class]="'px-2 py-1 rounded text-xs font-semibold ' + getStatusBadgeColor(monitor.status)">
+              {{ monitor.status }}
+            </span>
+          </div>
+
+          <!-- Monitor Stats -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-400">Status Code:</span>
+              <span [class]="'font-semibold ' + getStatusCodeColor(monitor.currentStatusCode)">
+                {{ monitor.currentStatusCode || 'N/A' }}
+              </span>
+            </div>
+            
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-400">Response Time:</span>
+              <span class="text-white font-semibold">{{ monitor.lastTimeTaken || 0 }}ms</span>
+            </div>
+            
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-400">Avg Response:</span>
+              <span class="text-white font-semibold">{{ monitor.averageResponseTime || 0 }}ms</span>
+            </div>
+            
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-400">Uptime:</span>
+              <span class="text-white font-semibold">{{ monitor.uptimePercent }}%</span>
+            </div>
+            
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-400">Total Pings:</span>
+              <span class="text-white font-semibold">{{ monitor.totalPings }}</span>
+            </div>
+            
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-400">Success:</span>
+              <span class="text-green-400 font-semibold">{{ monitor.successPings }}</span>
+            </div>
+            
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-400">Failures:</span>
+              <span class="text-red-400 font-semibold">{{ monitor.failurePings }}</span>
+            </div>
+
+            <div *ngIf="monitor.lastError" class="mt-2 p-2 bg-red-500/10 border border-red-500/30 rounded text-xs text-red-400">
+              <strong>Error:</strong> {{ monitor.lastError }}
+            </div>
+
+            <div class="text-xs text-gray-500 mt-2">
+              Last checked: {{ monitor.lastCheckedAt | date:'short' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monitor Popup Modal -->
+  <div 
+    *ngIf="showMonitorPopup && selectedMonitor"
+    class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+    (click)="closeMonitorPopup()">
+    <div 
+      class="bg-slate-900 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-700"
+      (click)="$event.stopPropagation()">
+      
+      <!-- Header -->
+      <div class="flex justify-between items-center p-6 border-b border-slate-700">
+        <div>
+          <h3 class="text-2xl font-semibold text-white mb-1">{{ selectedMonitor.name }}</h3>
+          <p class="text-sm text-gray-400">{{ selectedMonitor.url }}</p>
+        </div>
+        <button 
+          (click)="closeMonitorPopup()"
+          class="text-gray-400 hover:text-white text-2xl p-2 hover:bg-slate-800 rounded-lg transition">
+          <i class="fa-solid fa-times"></i>
         </button>
+      </div>
 
-        <!-- Fullscreen iFrame -->
-        <iframe [src]="previewSite | safeUrl" class="w-full h-full rounded-lg bg-black" frameborder="0">
-        </iframe>
+      <!-- Monitor Stats -->
+      <div class="p-6 grid grid-cols-2 md:grid-cols-4 gap-4 border-b border-slate-700">
+        <div>
+          <p class="text-xs text-gray-400 mb-1">Status Code</p>
+          <p [class]="'text-lg font-semibold ' + getStatusCodeColor(selectedMonitor.currentStatusCode)">
+            {{ selectedMonitor.currentStatusCode || 'N/A' }}
+          </p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 mb-1">Response Time</p>
+          <p class="text-lg font-semibold text-white">{{ selectedMonitor.lastTimeTaken || 0 }}ms</p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 mb-1">Uptime</p>
+          <p class="text-lg font-semibold text-white">{{ selectedMonitor.uptimePercent }}%</p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 mb-1">Total Pings</p>
+          <p class="text-lg font-semibold text-white">{{ selectedMonitor.totalPings }}</p>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="p-6">
+        <h4 class="text-lg font-semibold text-white mb-4">Response Time History</h4>
+        <div class="h-[400px]">
+          <div *ngIf="isLoadingMonitorData" class="flex items-center justify-center h-full">
+            <div class="text-center">
+              <i class="fa-solid fa-spinner fa-spin text-4xl text-blue-400 mb-4"></i>
+              <p class="text-gray-400">Loading historical data...</p>
+            </div>
+          </div>
+          <canvas *ngIf="!isLoadingMonitorData" #monitorChart></canvas>
+        </div>
       </div>
     </div>
-
-
   </div>
 </div>

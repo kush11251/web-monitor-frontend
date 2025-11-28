@@ -78,6 +78,29 @@
               ],
               "outputHashing": "all"
             },
+            "uat": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kB",
+                  "maximumError": "4kB"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.uat.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "optimization": true,
+              "sourceMap": false
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -91,6 +114,9 @@
           "configurations": {
             "production": {
               "buildTarget": "web-monitor-frontend:build:production"
+            },
+            "uat": {
+              "buildTarget": "web-monitor-frontend:build:uat"
             },
             "development": {
               "buildTarget": "web-monitor-frontend:build:development"

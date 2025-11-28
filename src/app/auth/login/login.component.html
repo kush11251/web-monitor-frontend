@@ -20,6 +20,11 @@
     <h2 class="text-xl font-semibold text-white mb-1">Welcome Back</h2>
     <p class="text-gray-500 text-sm mb-6">Sign in to access your dashboard</p>
 
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+      <p class="text-red-400 text-sm">{{ errorMessage }}</p>
+    </div>
+
     <!-- Form -->
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
@@ -72,13 +77,15 @@
 
       <button
         type="submit"
-        [disabled]="loginForm.invalid"
+        [disabled]="loginForm.invalid || isLoading"
         class="w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-black font-semibold py-3 
                rounded-xl shadow-lg hover:brightness-110 disabled:opacity-50 
                transition-all flex items-center justify-center gap-2"
       >
-        Sign In
-        <i class="fa-solid fa-arrow-right text-sm"></i>
+        <span *ngIf="!isLoading">Sign In</span>
+        <span *ngIf="isLoading">Signing in...</span>
+        <i *ngIf="!isLoading" class="fa-solid fa-arrow-right text-sm"></i>
+        <i *ngIf="isLoading" class="fa-solid fa-spinner fa-spin text-sm"></i>
       </button>
     </form>
 

@@ -1,5 +1,6 @@
 export const environment = {
-  production: true,
+  production: false,
   apiUrl: 'https://web-monitor-backend-g9zz.onrender.com',
   socketUrl: 'https://web-monitor-backend-g9zz.onrender.com'
 };
+
