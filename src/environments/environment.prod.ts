@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://web-monitor-backend-g9zz.onrender.com',
-  socketUrl: 'https://web-monitor-backend-g9zz.onrender.com'
+  apiUrl: 'project-loadmaster-api.kussagrapathak.in',
+  socketUrl: 'project-loadmaster-api.kussagrapathak.in'
 };
